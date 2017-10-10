@@ -196,6 +196,7 @@ extension ViewController: MineGridDelegate {
             }
         } else {
             grid.isMarked = !grid.isMarked
+            self.countOfMarks += grid.isMarked ? 1 : -1
         }
     }
     
