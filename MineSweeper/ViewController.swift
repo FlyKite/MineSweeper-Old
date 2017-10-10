@@ -16,6 +16,14 @@ class ViewController: UIViewController {
     fileprivate var mineGrids: [[MineGrid]] = []
     fileprivate var startTime: TimeInterval?
     fileprivate var openedCount: Int = 0
+    
+    fileprivate let margin: CGFloat = 80
+    fileprivate let gridSize: CGFloat = 40
+    fileprivate let interval: CGFloat = 2
+    
+    fileprivate let rows = 30
+    fileprivate let columns = 16
+    fileprivate let mines = 99
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,29 +31,44 @@ class ViewController: UIViewController {
         
         self.scrollView.frame = self.view.bounds
         self.scrollView.delegate = self
+        self.scrollView.decelerationRate = UIScrollViewDecelerationRateFast
         self.scrollView.maximumZoomScale = 1.0
         self.scrollView.minimumZoomScale = 0.5
         self.view.addSubview(self.scrollView)
         
-        self.mineContainer.frame = CGRect(x: 40, y: 40, width: 42 * 16 - 2, height: 42 * 30 - 2)
+        self.mineContainer.frame = CGRect(x: margin,
+                                          y: margin,
+                                          width: (gridSize + interval) * CGFloat(columns) - interval,
+                                          height: (gridSize + interval) * CGFloat(rows) - interval)
         self.scrollView.addSubview(self.mineContainer)
-        let width = self.mineContainer.bounds.width + 80
-        let height = self.mineContainer.bounds.height + 80
+        let width = self.mineContainer.bounds.width + margin * 2
+        let height = self.mineContainer.bounds.height + margin * 2
         self.scrollView.contentSize = CGSize(width: width, height: height)
         self.scrollView.contentOffset = CGPoint(x: (width - UIScreen.main.bounds.width) / 2, y: (height - UIScreen.main.bounds.height) / 2)
-        for row in 0 ..< 30 {
+        
+        self.generateMineGrids()
+        self.transitionTips()
+    }
+    
+    fileprivate func generateMineGrids() {
+        for row in 0 ..< rows {
             var mineGrids: [MineGrid] = []
-            for column in 0 ..< 16 {
+            for column in 0 ..< columns {
                 let grid = MineGrid(rowIndex: row, columnIndex: column)
                 grid.delegate = self
-                grid.frame = CGRect(x: 42 * column, y: 42 * row, width: 40, height: 40)
+                grid.frame = CGRect(x: (gridSize + interval) * CGFloat(column),
+                                    y: (gridSize + interval) * CGFloat(row),
+                                    width: gridSize,
+                                    height: gridSize)
                 self.mineContainer.addSubview(grid)
                 mineGrids.append(grid)
             }
             self.mineGrids.append(mineGrids)
         }
         self.resetGame()
-        
+    }
+    
+    fileprivate func transitionTips() {
         UIView.animate(withDuration: 1.0, delay: 0, options: .curveEaseInOut, animations: {
             self.scrollView.zoomScale = 0.75
         }) { (finished) in
@@ -66,11 +89,11 @@ class ViewController: UIViewController {
     }
     
     fileprivate func generateMine(_ firstRow: Int, _ firstColumn: Int) {
-        for _ in 0 ..< 99 {
+        for _ in 0 ..< mines {
             var set = false
             while !set {
-                let row = Int(arc4random() % 30)
-                let col = Int(arc4random() % 16)
+                let row = Int(arc4random()) % rows
+                let col = Int(arc4random()) % columns
                 let grid = self.mineGrids[row][col]
                 if grid.mineNumber != -1 {
                     let shouldSkip = row - firstRow <= 1
@@ -107,22 +130,22 @@ class ViewController: UIViewController {
         if row > 0 && self.mineGrids[row - 1][col].mineNumber == -1 {
             count += 1
         }
-        if row > 0 && col < 16 - 1 && self.mineGrids[row - 1][col + 1].mineNumber == -1 {
+        if row > 0 && col < columns - 1 && self.mineGrids[row - 1][col + 1].mineNumber == -1 {
             count += 1
         }
         if col > 0 && self.mineGrids[row][col - 1].mineNumber == -1 {
             count += 1
         }
-        if col < 16 - 1 && self.mineGrids[row][col + 1].mineNumber == -1 {
+        if col < columns - 1 && self.mineGrids[row][col + 1].mineNumber == -1 {
             count += 1
         }
-        if row < 30 - 1 && col > 0 && self.mineGrids[row + 1][col - 1].mineNumber == -1 {
+        if row < rows - 1 && col > 0 && self.mineGrids[row + 1][col - 1].mineNumber == -1 {
             count += 1
         }
-        if row < 30 - 1 && self.mineGrids[row + 1][col].mineNumber == -1 {
+        if row < rows - 1 && self.mineGrids[row + 1][col].mineNumber == -1 {
             count += 1
         }
-        if row < 30 - 1 && col < 16 - 1 && self.mineGrids[row + 1][col + 1].mineNumber == -1 {
+        if row < rows - 1 && col < columns - 1 && self.mineGrids[row + 1][col + 1].mineNumber == -1 {
             count += 1
         }
         return count
@@ -145,9 +168,9 @@ extension ViewController: UIScrollViewDelegate {
     func scrollViewDidZoom(_ scrollView: UIScrollView) {
         var width = self.mineContainer.bounds.width * scrollView.zoomScale
         if width > UIScreen.main.bounds.width {
-            width += 80
+            width += margin * 2
             var frame = self.mineContainer.frame
-            frame.origin.x = 40
+            frame.origin.x = margin
             self.mineContainer.frame = frame
         } else {
             var frame = self.mineContainer.frame
@@ -156,7 +179,7 @@ extension ViewController: UIScrollViewDelegate {
         }
         var height = self.mineContainer.bounds.height * scrollView.zoomScale
         if height > UIScreen.main.bounds.height - 20 {
-            height += 80
+            height += margin * 2
         }
         self.scrollView.contentSize = CGSize(width: width, height: height)
     }
@@ -177,7 +200,7 @@ extension ViewController: MineGridDelegate {
         self.openedCount += 1
         if grid.mineNumber == -1 {
             self.gameOver()
-        } else if self.openedCount == 30 * 16 - 99 {
+        } else if self.openedCount == rows * columns - mines {
             self.gameWin()
         } else if grid.mineNumber == 0 {
             self.openArround(row: row, column: column)
@@ -214,22 +237,22 @@ extension ViewController: MineGridDelegate {
         if row > 0 && !grid.isMarked {
             self.open(row: row - 1, column: column)
         }
-        if row > 0 && column < 16 - 1 && !grid.isMarked {
+        if row > 0 && column < columns - 1 && !grid.isMarked {
             self.open(row: row - 1, column: column + 1)
         }
         if column > 0 && !grid.isMarked {
             self.open(row: row, column: column - 1)
         }
-        if column < 16 - 1 && !grid.isMarked {
+        if column < columns - 1 && !grid.isMarked {
             self.open(row: row, column: column + 1)
         }
-        if row < 30 - 1 && column > 0 && !grid.isMarked {
+        if row < rows - 1 && column > 0 && !grid.isMarked {
             self.open(row: row + 1, column: column - 1)
         }
-        if row < 30 - 1 && !grid.isMarked {
+        if row < rows - 1 && !grid.isMarked {
             self.open(row: row + 1, column: column)
         }
-        if row < 30 - 1 && column < 16 - 1 && !grid.isMarked {
+        if row < rows - 1 && column < columns - 1 && !grid.isMarked {
             self.open(row: row + 1, column: column + 1)
         }
     }
@@ -242,22 +265,22 @@ extension ViewController: MineGridDelegate {
         if row > 0 && self.mineGrids[row - 1][column].isMarked {
             count += 1
         }
-        if row > 0 && column < 16 - 1 && self.mineGrids[row - 1][column + 1].isMarked {
+        if row > 0 && column < columns - 1 && self.mineGrids[row - 1][column + 1].isMarked {
             count += 1
         }
         if column > 0 && self.mineGrids[row][column - 1].isMarked {
             count += 1
         }
-        if column < 16 - 1 && self.mineGrids[row][column + 1].isMarked {
+        if column < columns - 1 && self.mineGrids[row][column + 1].isMarked {
             count += 1
         }
-        if row < 30 - 1 && column > 0 && self.mineGrids[row + 1][column - 1].isMarked {
+        if row < rows - 1 && column > 0 && self.mineGrids[row + 1][column - 1].isMarked {
             count += 1
         }
-        if row < 30 - 1 && self.mineGrids[row + 1][column].isMarked {
+        if row < rows - 1 && self.mineGrids[row + 1][column].isMarked {
             count += 1
         }
-        if row < 30 - 1 && column < 16 - 1 && self.mineGrids[row + 1][column + 1].isMarked {
+        if row < rows - 1 && column < columns - 1 && self.mineGrids[row + 1][column + 1].isMarked {
             count += 1
         }
         return count
