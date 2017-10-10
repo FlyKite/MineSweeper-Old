@@ -9,8 +9,8 @@
 import UIKit
 
 protocol MineGridDelegate: class {
-    func open(row: Int, column: Int)
-    func openArround(row: Int, column: Int)
+    func gridClicked(grid: MineGrid)
+    func gridDeepPressed(grid: MineGrid)
 }
 
 class MineGrid: UIControl {
@@ -164,14 +164,9 @@ class MineGrid: UIControl {
         }
         if #available(iOS 9.0, *) {
             print(touch.force)
-            if touch.force >= touch.maximumPossibleForce / 2 {
+            if touch.force >= touch.maximumPossibleForce / 3 {
                 self.coverLayer.backgroundColor = self.normalBackgroundColor.cgColor
-                self.delegate?.open(row: self.rowIndex, column: self.columnIndex)
-                if #available(iOS 10.0, *) {
-                    let impact = UIImpactFeedbackGenerator(style: .medium)
-                    impact.prepare()
-                    impact.impactOccurred()
-                }
+                self.delegate?.gridDeepPressed(grid: self)
                 return false
             }
         }
@@ -186,11 +181,11 @@ class MineGrid: UIControl {
         } else {
             if self.openStatus {
                 if self.mineNumber > 0 {
-                    self.delegate?.openArround(row: self.rowIndex, column: self.columnIndex)
+                    self.delegate?.gridClicked(grid: self)
                 }
             } else {
                 self.coverLayer.backgroundColor = self.normalBackgroundColor.cgColor
-                self.isMarked = !self.isMarked
+                self.delegate?.gridClicked(grid: self)
             }
         }
     }

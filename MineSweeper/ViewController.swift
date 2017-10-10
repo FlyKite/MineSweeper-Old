@@ -24,6 +24,8 @@ class ViewController: UIViewController {
     fileprivate let rows = 30
     fileprivate let columns = 16
     fileprivate let mines = 99
+    
+    fileprivate var countOfMarks = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -187,12 +189,30 @@ extension ViewController: UIScrollViewDelegate {
 
 extension ViewController: MineGridDelegate {
     
-    func open(row: Int, column: Int) {
+    func gridClicked(grid: MineGrid) {
+        if grid.isOpened {
+            if grid.mineNumber > 0 {
+                self.openArround(grid: grid)
+            }
+        } else {
+            grid.isMarked = !grid.isMarked
+        }
+    }
+    
+    func gridDeepPressed(grid: MineGrid) {
+        if #available(iOS 10.0, *) {
+            let impact = UIImpactFeedbackGenerator(style: .medium)
+            impact.prepare()
+            impact.impactOccurred()
+        }
+        self.open(grid: grid)
+    }
+    
+    fileprivate func open(grid: MineGrid) {
         if self.startTime == nil {
-            self.generateMine(row, column)
+            self.generateMine(grid.rowIndex, grid.columnIndex)
             self.startTime = Date().timeIntervalSince1970
         }
-        let grid = self.mineGrids[row][column]
         if grid.isOpened || grid.isMarked {
             return
         }
@@ -203,7 +223,7 @@ extension ViewController: MineGridDelegate {
         } else if self.openedCount == rows * columns - mines {
             self.gameWin()
         } else if grid.mineNumber == 0 {
-            self.openArround(row: row, column: column)
+            self.openArround(grid: grid)
         }
     }
     
@@ -226,34 +246,35 @@ extension ViewController: MineGridDelegate {
         self.present(alert, animated: true, completion: nil)
     }
     
-    func openArround(row: Int, column: Int) {
-        let grid = self.mineGrids[row][column]
+    fileprivate func openArround(grid: MineGrid) {
+        let row = grid.rowIndex
+        let column = grid.columnIndex
         if self.countOfMarksArround(row: row, column: column) != grid.mineNumber {
             return
         }
         if row > 0 && column > 0 && !grid.isMarked {
-            self.open(row: row - 1, column: column - 1)
+            self.open(grid: self.mineGrids[row - 1][column - 1])
         }
         if row > 0 && !grid.isMarked {
-            self.open(row: row - 1, column: column)
+            self.open(grid: self.mineGrids[row - 1][column])
         }
         if row > 0 && column < columns - 1 && !grid.isMarked {
-            self.open(row: row - 1, column: column + 1)
+            self.open(grid: self.mineGrids[row - 1][column + 1])
         }
         if column > 0 && !grid.isMarked {
-            self.open(row: row, column: column - 1)
+            self.open(grid: self.mineGrids[row][column - 1])
         }
         if column < columns - 1 && !grid.isMarked {
-            self.open(row: row, column: column + 1)
+            self.open(grid: self.mineGrids[row][column + 1])
         }
         if row < rows - 1 && column > 0 && !grid.isMarked {
-            self.open(row: row + 1, column: column - 1)
+            self.open(grid: self.mineGrids[row + 1][column - 1])
         }
         if row < rows - 1 && !grid.isMarked {
-            self.open(row: row + 1, column: column)
+            self.open(grid: self.mineGrids[row + 1][column])
         }
         if row < rows - 1 && column < columns - 1 && !grid.isMarked {
-            self.open(row: row + 1, column: column + 1)
+            self.open(grid: self.mineGrids[row + 1][column + 1])
         }
     }
     
