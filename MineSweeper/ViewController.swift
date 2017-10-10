@@ -29,8 +29,10 @@ class ViewController: UIViewController {
         
         self.mineContainer.frame = CGRect(x: 40, y: 40, width: 42 * 16 - 2, height: 42 * 30 - 2)
         self.scrollView.addSubview(self.mineContainer)
-        self.scrollView.contentSize = CGSize(width: self.mineContainer.bounds.width + 80, height: self.mineContainer.bounds.height + 80)
-        self.scrollView.zoomScale = 0.75
+        let width = self.mineContainer.bounds.width + 80
+        let height = self.mineContainer.bounds.height + 80
+        self.scrollView.contentSize = CGSize(width: width, height: height)
+        self.scrollView.contentOffset = CGPoint(x: (width - UIScreen.main.bounds.width) / 2, y: (height - UIScreen.main.bounds.height) / 2)
         for row in 0 ..< 30 {
             var mineGrids: [MineGrid] = []
             for column in 0 ..< 16 {
@@ -43,14 +45,14 @@ class ViewController: UIViewController {
             self.mineGrids.append(mineGrids)
         }
         self.resetGame()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
         
-        let alert = UIAlertController(title: "操作说明", message: " \n点击：标记为地雷\n用力按：挖开这个格子\n \n点击已经挖开的格子会检查附近的标记，比如点击了已经挖开的格子，这个格子显示数字2，如果这个格子的周围刚好有2个标记则挖开周围所有未标记的格子，否则不执行任何操作。", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "开始", style: .default, handler: nil))
-        self.present(alert, animated: true, completion: nil)
+        UIView.animate(withDuration: 1.0, delay: 0, options: .curveEaseInOut, animations: {
+            self.scrollView.zoomScale = 0.75
+        }) { (finished) in
+            let alert = UIAlertController(title: "操作说明", message: " \n点击：标记为地雷\n用力按：挖开这个格子\n \n点击已经挖开的格子会检查附近的标记，比如点击了已经挖开的格子，这个格子显示数字2，如果这个格子的周围刚好有2个标记则挖开周围所有未标记的格子，否则不执行任何操作。", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "开始", style: .default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
     }
     
     fileprivate func resetGame() {
