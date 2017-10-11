@@ -248,64 +248,48 @@ extension ViewController: MineGridDelegate {
     }
     
     fileprivate func openArround(grid: MineGrid) {
-        let row = grid.rowIndex
-        let column = grid.columnIndex
-        if self.countOfMarksArround(row: row, column: column) != grid.mineNumber {
+        let gridsArround = self.getGridsArround(grid: grid)
+        var markCount = 0
+        for grid in gridsArround {
+            markCount += grid.isMarked ? 1 : 0
+        }
+        if markCount != grid.mineNumber {
             return
         }
-        if row > 0 && column > 0 && !grid.isMarked {
-            self.open(grid: self.mineGrids[row - 1][column - 1])
-        }
-        if row > 0 && !grid.isMarked {
-            self.open(grid: self.mineGrids[row - 1][column])
-        }
-        if row > 0 && column < columns - 1 && !grid.isMarked {
-            self.open(grid: self.mineGrids[row - 1][column + 1])
-        }
-        if column > 0 && !grid.isMarked {
-            self.open(grid: self.mineGrids[row][column - 1])
-        }
-        if column < columns - 1 && !grid.isMarked {
-            self.open(grid: self.mineGrids[row][column + 1])
-        }
-        if row < rows - 1 && column > 0 && !grid.isMarked {
-            self.open(grid: self.mineGrids[row + 1][column - 1])
-        }
-        if row < rows - 1 && !grid.isMarked {
-            self.open(grid: self.mineGrids[row + 1][column])
-        }
-        if row < rows - 1 && column < columns - 1 && !grid.isMarked {
-            self.open(grid: self.mineGrids[row + 1][column + 1])
+        for grid in gridsArround {
+            self.open(grid: grid)
         }
     }
     
-    fileprivate func countOfMarksArround(row: Int, column: Int) -> Int {
-        var count = 0
-        if row > 0 && column > 0 && self.mineGrids[row - 1][column - 1].isMarked {
-            count += 1
+    fileprivate func getGridsArround(grid: MineGrid) -> [MineGrid] {
+        let row = grid.rowIndex
+        let column = grid.columnIndex
+        var grids: [MineGrid] = []
+        if row > 0 && column > 0 {
+            grids.append(self.mineGrids[row - 1][column - 1])
         }
-        if row > 0 && self.mineGrids[row - 1][column].isMarked {
-            count += 1
+        if row > 0 {
+            grids.append(self.mineGrids[row - 1][column])
         }
-        if row > 0 && column < columns - 1 && self.mineGrids[row - 1][column + 1].isMarked {
-            count += 1
+        if row > 0 && column < columns - 1 {
+            grids.append(self.mineGrids[row - 1][column + 1])
         }
-        if column > 0 && self.mineGrids[row][column - 1].isMarked {
-            count += 1
+        if column > 0 {
+            grids.append(self.mineGrids[row][column - 1])
         }
-        if column < columns - 1 && self.mineGrids[row][column + 1].isMarked {
-            count += 1
+        if column < columns - 1 {
+            grids.append(self.mineGrids[row][column + 1])
         }
-        if row < rows - 1 && column > 0 && self.mineGrids[row + 1][column - 1].isMarked {
-            count += 1
+        if row < rows - 1 && column > 0 {
+            grids.append(self.mineGrids[row + 1][column - 1])
         }
-        if row < rows - 1 && self.mineGrids[row + 1][column].isMarked {
-            count += 1
+        if row < rows - 1 {
+            grids.append(self.mineGrids[row + 1][column])
         }
-        if row < rows - 1 && column < columns - 1 && self.mineGrids[row + 1][column + 1].isMarked {
-            count += 1
+        if row < rows - 1 && column < columns - 1 {
+            grids.append(self.mineGrids[row + 1][column + 1])
         }
-        return count
+        return grids
     }
     
 }
