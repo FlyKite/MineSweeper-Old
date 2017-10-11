@@ -14,6 +14,7 @@
 		A66788CD1F8C63B600B1AB9E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A66788CB1F8C63B600B1AB9E /* LaunchScreen.storyboard */; };
 		A66788D51F8C655D00B1AB9E /* MineGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66788D41F8C655D00B1AB9E /* MineGrid.swift */; };
 		A66788D71F8C660800B1AB9E /* CommonUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66788D61F8C660800B1AB9E /* CommonUtil.swift */; };
+		A6B90F821F8E0D5600C63DDA /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6B90F811F8E0D5600C63DDA /* AudioToolbox.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		A66788CE1F8C63B600B1AB9E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A66788D41F8C655D00B1AB9E /* MineGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MineGrid.swift; sourceTree = "<group>"; };
 		A66788D61F8C660800B1AB9E /* CommonUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonUtil.swift; sourceTree = "<group>"; };
+		A6B90F811F8E0D5600C63DDA /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -33,6 +35,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A6B90F821F8E0D5600C63DDA /* AudioToolbox.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -44,6 +47,7 @@
 			children = (
 				A66788C11F8C63B600B1AB9E /* MineSweeper */,
 				A66788C01F8C63B600B1AB9E /* Products */,
+				A6B90F801F8E0D5600C63DDA /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -68,6 +72,14 @@
 				A66788CE1F8C63B600B1AB9E /* Info.plist */,
 			);
 			path = MineSweeper;
+			sourceTree = "<group>";
+		};
+		A6B90F801F8E0D5600C63DDA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A6B90F811F8E0D5600C63DDA /* AudioToolbox.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

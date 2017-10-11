@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import AVFoundation
+import AudioToolbox
 
 class ViewController: UIViewController {
     
@@ -229,7 +229,7 @@ extension ViewController: MineGridDelegate {
     }
     
     fileprivate func gameWin() {
-        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
+        AudioServicesPlaySystemSound(1521)
         let time = Int((Date().timeIntervalSince1970 - (self.startTime ?? 0)) * 1000)
         let alert = UIAlertController(title: "大吉大利今晚吃鸡", message: "总耗时：\(Double(time) / 1000.0)秒", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "开新一局", style: .default, handler: { (action) in
@@ -239,7 +239,7 @@ extension ViewController: MineGridDelegate {
     }
     
     fileprivate func gameOver() {
-        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
+        AudioServicesPlaySystemSound(1521)
         let alert = UIAlertController(title: "游戏结束", message: "踩到炸弹啦笨蛋！", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "重新开始", style: .default, handler: { (action) in
             self.resetGame()
