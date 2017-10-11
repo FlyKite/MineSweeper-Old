@@ -21,3 +21,19 @@ extension Int {
         return UIColor(red: red, green: green, blue: blue, alpha: alpha)
     }
 }
+
+extension CALayer {
+    
+    var shadowUIColor: UIColor? {
+        get {
+            if let color = self.shadowColor {
+                return UIColor(cgColor: color)
+            }
+            return nil
+        }
+        set {
+            self.shadowColor = newValue?.cgColor
+        }
+    }
+    
+}

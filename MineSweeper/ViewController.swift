@@ -11,9 +11,11 @@ import AudioToolbox
 
 class ViewController: UIViewController {
     
-    fileprivate let scrollView: UIScrollView = UIScrollView()
+    @IBOutlet fileprivate weak var scrollView: UIScrollView!
     fileprivate let mineContainer: UIView = UIView()
     fileprivate var mineGrids: [[MineGrid]] = []
+    @IBOutlet fileprivate weak var leftMineCountLabel: UILabel!
+    @IBOutlet fileprivate weak var usedTimeLabel: UILabel!
     fileprivate var startTime: TimeInterval?
     fileprivate var openedCount: Int = 0
     
@@ -25,18 +27,21 @@ class ViewController: UIViewController {
     fileprivate let columns = 16
     fileprivate let mines = 99
     
-    fileprivate var countOfMarks = 0
+    fileprivate var countOfMarks = 0 {
+        didSet {
+            self.leftMineCountLabel.text = "\(self.mines - self.countOfMarks)"
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        self.scrollView.frame = self.view.bounds
         self.scrollView.delegate = self
+        self.scrollView.scrollsToTop = false
         self.scrollView.decelerationRate = UIScrollViewDecelerationRateFast
         self.scrollView.maximumZoomScale = 1.0
         self.scrollView.minimumZoomScale = 0.5
-        self.view.addSubview(self.scrollView)
         
         self.mineContainer.frame = CGRect(x: margin,
                                           y: margin,
@@ -50,6 +55,10 @@ class ViewController: UIViewController {
         
         self.generateMineGrids()
         self.transitionTips()
+    }
+    
+    @IBAction func restartClicked(_ sender: UIButton) {
+        self.resetGame()
     }
     
     fileprivate func generateMineGrids() {
@@ -83,6 +92,8 @@ class ViewController: UIViewController {
     fileprivate func resetGame() {
         self.startTime = nil
         self.openedCount = 0
+        self.leftMineCountLabel.text = "\(mines)"
+        self.usedTimeLabel.text = "0"
         for row in 0 ..< self.mineGrids.count {
             for col in 0 ..< self.mineGrids[row].count {
                 self.mineGrids[row][col].reset()
