@@ -23,7 +23,6 @@ class MineGrid: UIControl {
             if self.mineNumber == -1 {
                 self.mineLayer.contents = self.mineImage.cgImage
                 self.mineNumberLayer.string = ""
-                self.mineLayer.backgroundColor = self.boomBackgroundColor.cgColor
             } else {
                 self.mineLayer.contents = nil
                 if self.mineNumber > 0 {
@@ -31,7 +30,6 @@ class MineGrid: UIControl {
                 } else {
                     self.mineNumberLayer.string = ""
                 }
-                self.mineLayer.backgroundColor = self.openedBackgroundColor.cgColor
             }
         }
     }
@@ -52,8 +50,10 @@ class MineGrid: UIControl {
     var openedBackgroundColor: UIColor = 0xE1F5FE.rgbColor
     var boomBackgroundColor: UIColor = 0xE51C23.rgbColor
     var flagImage: UIImage = #imageLiteral(resourceName: "flag")
+    var flagErrorImage: UIImage = #imageLiteral(resourceName: "flag_error")
     var mineImage: UIImage = #imageLiteral(resourceName: "mine")
     
+    fileprivate let padding: CGFloat = 1
     fileprivate let mineLayer: CALayer = CALayer()
     fileprivate let mineNumberLayer: CATextLayer = CATextLayer()
     fileprivate let coverLayer: CALayer = CALayer()
@@ -71,15 +71,15 @@ class MineGrid: UIControl {
         transform.m34 = -1.0 / 400.0
         self.layer.sublayerTransform = transform
         
-        self.mineLayer.frame = self.bounds
+        self.mineLayer.frame = self.bounds.insetBy(dx: padding, dy: padding)
         self.mineLayer.backgroundColor = openedBackgroundColor.cgColor
-        self.mineNumberLayer.frame = self.bounds.offsetBy(dx: 0, dy: 8)
+        self.mineNumberLayer.frame = self.bounds.insetBy(dx: padding, dy: padding).offsetBy(dx: 0, dy: 8)
         self.mineNumberLayer.fontSize = 22
         self.mineNumberLayer.foregroundColor = self.fontColor.cgColor
         self.mineNumberLayer.contentsScale = UIScreen.main.scale
         self.mineNumberLayer.alignmentMode = kCAAlignmentCenter
         self.mineNumberLayer.foregroundColor = self.fontColor.cgColor
-        self.coverLayer.frame = self.bounds
+        self.coverLayer.frame = self.bounds.insetBy(dx: padding, dy: padding)
         self.coverLayer.backgroundColor = normalBackgroundColor.cgColor
     }
     
@@ -93,9 +93,9 @@ class MineGrid: UIControl {
         }
         set {
             super.frame = newValue
-            self.mineLayer.frame = self.bounds
-            self.mineNumberLayer.frame = self.bounds.offsetBy(dx: 0, dy: 8)
-            self.coverLayer.frame = self.bounds
+            self.mineLayer.frame = self.bounds.insetBy(dx: padding, dy: padding)
+            self.mineNumberLayer.frame = self.bounds.insetBy(dx: padding, dy: padding).offsetBy(dx: 0, dy: 8)
+            self.coverLayer.frame = self.bounds.insetBy(dx: padding, dy: padding)
         }
     }
     
@@ -104,15 +104,29 @@ class MineGrid: UIControl {
             return
         }
         self.openStatus = true
+        if self.mineNumber == -1 {
+            self.mineLayer.backgroundColor = self.boomBackgroundColor.cgColor
+        }
         openAnimation()
     }
     
     func reset() {
+        self.isEnabled = true
         self.mineNumber = 0
         self.isMarked = false
         self.openStatus = false
+        self.coverLayer.opacity = 1
         self.coverLayer.removeAllAnimations()
+        self.mineLayer.backgroundColor = self.openedBackgroundColor.cgColor
         self.mineLayer.removeAllAnimations()
+    }
+    
+    func gameFailed() {
+        if self.isMarked && self.mineNumber != -1 {
+            self.coverLayer.contents = self.flagErrorImage.cgImage
+        } else if !self.isMarked && self.mineNumber == -1 {
+            self.coverLayer.opacity = 0
+        }
     }
     
     fileprivate func openAnimation() {

@@ -18,14 +18,13 @@ class ViewController: UIViewController {
     @IBOutlet fileprivate weak var usedTimeLabel: UILabel!
     
     fileprivate let margin: CGFloat = 80
-    fileprivate let gridSize: CGFloat = 40
-    fileprivate let interval: CGFloat = 2
+    fileprivate let gridSize: CGFloat = 42
     
     fileprivate let rows = 30
     fileprivate let columns = 16
     fileprivate let mines = 99
     
-    fileprivate var startTime: TimeInterval?
+    fileprivate var gameStarted: Bool = false
     fileprivate var timer: CADisplayLink?
     fileprivate var timeStep: Int = 0
     fileprivate var openedCount: Int = 0
@@ -47,8 +46,8 @@ class ViewController: UIViewController {
         
         self.mineContainer.frame = CGRect(x: margin,
                                           y: margin,
-                                          width: (gridSize + interval) * CGFloat(columns) - interval,
-                                          height: (gridSize + interval) * CGFloat(rows) - interval)
+                                          width: gridSize * CGFloat(columns),
+                                          height: gridSize * CGFloat(rows))
         self.scrollView.addSubview(self.mineContainer)
         let width = self.mineContainer.bounds.width + margin * 2
         let height = self.mineContainer.bounds.height + margin * 2
@@ -65,8 +64,8 @@ class ViewController: UIViewController {
             for column in 0 ..< columns {
                 let grid = MineGrid(rowIndex: row, columnIndex: column)
                 grid.delegate = self
-                grid.frame = CGRect(x: (gridSize + interval) * CGFloat(column),
-                                    y: (gridSize + interval) * CGFloat(row),
+                grid.frame = CGRect(x: gridSize * CGFloat(column),
+                                    y: gridSize * CGFloat(row),
                                     width: gridSize,
                                     height: gridSize)
                 self.mineContainer.addSubview(grid)
@@ -92,7 +91,8 @@ class ViewController: UIViewController {
     
     fileprivate func startGame(with grid: MineGrid) {
         self.generateMine(grid.rowIndex, grid.columnIndex)
-        self.startTime = Date().timeIntervalSince1970
+        self.gameStarted = true
+        self.timer?.invalidate()
         self.timer = CADisplayLink(target: self, selector: #selector(timeStep(_:)))
         self.timer?.add(to: RunLoop.current, forMode: .commonModes)
     }
@@ -107,7 +107,7 @@ class ViewController: UIViewController {
     }
     
     fileprivate func resetGame() {
-        self.startTime = nil
+        self.gameStarted = false
         self.timer?.invalidate()
         self.timeStep = 0
         self.openedCount = 0
@@ -241,7 +241,7 @@ extension ViewController: MineGridDelegate {
     }
     
     fileprivate func open(grid: MineGrid) {
-        if self.startTime == nil {
+        if !self.gameStarted {
             self.startGame(with: grid)
         }
         if grid.isOpened || grid.isMarked {
@@ -261,9 +261,23 @@ extension ViewController: MineGridDelegate {
     fileprivate func gameWin() {
         self.timer?.invalidate()
         AudioServicesPlaySystemSound(1521)
-        let time = Int((Date().timeIntervalSince1970 - (self.startTime ?? 0)) * 1000)
-        let alert = UIAlertController(title: "大吉大利今晚吃鸡", message: "总耗时：\(Double(time) / 1000.0)秒", preferredStyle: .alert)
+        var time = 0
+        if #available(iOS 10.3, *) {
+            time = Int((Double(self.timeStep) / Double(UIScreen.main.maximumFramesPerSecond)) * 100)
+        } else {
+            time = Int((Double(self.timeStep) / 60) * 100)
+        }
+        let alert = UIAlertController(title: "大吉大利今晚吃鸡", message: "总耗时：\(Double(time) / 100.0)秒", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "稍后", style: .cancel, handler: { (action) in
+            self.gameStarted = false
+            for row in 0 ..< self.mineGrids.count {
+                for col in 0 ..< self.mineGrids[row].count {
+                    self.mineGrids[row][col].isEnabled = false
+                }
+            }
+        }))
         alert.addAction(UIAlertAction(title: "开新一局", style: .default, handler: { (action) in
+            self.gameStarted = false
             self.resetGame()
         }))
         self.present(alert, animated: true, completion: nil)
@@ -271,9 +285,23 @@ extension ViewController: MineGridDelegate {
     
     fileprivate func gameOver() {
         self.timer?.invalidate()
+        for row in 0 ..< self.mineGrids.count {
+            for col in 0 ..< self.mineGrids[row].count {
+                self.mineGrids[row][col].gameFailed()
+            }
+        }
         AudioServicesPlaySystemSound(1521)
         let alert = UIAlertController(title: "游戏结束", message: "踩到炸弹啦笨蛋！", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "稍后", style: .cancel, handler: { (action) in
+            self.gameStarted = false
+            for row in 0 ..< self.mineGrids.count {
+                for col in 0 ..< self.mineGrids[row].count {
+                    self.mineGrids[row][col].isEnabled = false
+                }
+            }
+        }))
         alert.addAction(UIAlertAction(title: "重新开始", style: .default, handler: { (action) in
+            self.gameStarted = false
             self.resetGame()
         }))
         self.present(alert, animated: true, completion: nil)
