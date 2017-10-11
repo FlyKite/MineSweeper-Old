@@ -16,8 +16,6 @@ class ViewController: UIViewController {
     fileprivate var mineGrids: [[MineGrid]] = []
     @IBOutlet fileprivate weak var leftMineCountLabel: UILabel!
     @IBOutlet fileprivate weak var usedTimeLabel: UILabel!
-    fileprivate var startTime: TimeInterval?
-    fileprivate var openedCount: Int = 0
     
     fileprivate let margin: CGFloat = 80
     fileprivate let gridSize: CGFloat = 40
@@ -27,6 +25,10 @@ class ViewController: UIViewController {
     fileprivate let columns = 16
     fileprivate let mines = 99
     
+    fileprivate var startTime: TimeInterval?
+    fileprivate var timer: CADisplayLink?
+    fileprivate var timeStep: Int = 0
+    fileprivate var openedCount: Int = 0
     fileprivate var countOfMarks = 0 {
         didSet {
             self.leftMineCountLabel.text = "\(self.mines - self.countOfMarks)"
@@ -57,10 +59,6 @@ class ViewController: UIViewController {
         self.transitionTips()
     }
     
-    @IBAction func restartClicked(_ sender: UIButton) {
-        self.resetGame()
-    }
-    
     fileprivate func generateMineGrids() {
         for row in 0 ..< rows {
             var mineGrids: [MineGrid] = []
@@ -76,7 +74,6 @@ class ViewController: UIViewController {
             }
             self.mineGrids.append(mineGrids)
         }
-        self.resetGame()
     }
     
     fileprivate func transitionTips() {
@@ -89,9 +86,32 @@ class ViewController: UIViewController {
         }
     }
     
+    @IBAction func restartClicked(_ sender: UIButton) {
+        self.resetGame()
+    }
+    
+    fileprivate func startGame(with grid: MineGrid) {
+        self.generateMine(grid.rowIndex, grid.columnIndex)
+        self.startTime = Date().timeIntervalSince1970
+        self.timer = CADisplayLink(target: self, selector: #selector(timeStep(_:)))
+        self.timer?.add(to: RunLoop.current, forMode: .commonModes)
+    }
+    
+    @objc fileprivate func timeStep(_ timer: CADisplayLink) {
+        self.timeStep += 1
+        if #available(iOS 10.3, *) {
+            self.usedTimeLabel.text = "\(self.timeStep / UIScreen.main.maximumFramesPerSecond)"
+        } else {
+            self.usedTimeLabel.text = "\(self.timeStep / 60)"
+        }
+    }
+    
     fileprivate func resetGame() {
         self.startTime = nil
+        self.timer?.invalidate()
+        self.timeStep = 0
         self.openedCount = 0
+        self.countOfMarks = 0
         self.leftMineCountLabel.text = "\(mines)"
         self.usedTimeLabel.text = "0"
         for row in 0 ..< self.mineGrids.count {
@@ -222,8 +242,7 @@ extension ViewController: MineGridDelegate {
     
     fileprivate func open(grid: MineGrid) {
         if self.startTime == nil {
-            self.generateMine(grid.rowIndex, grid.columnIndex)
-            self.startTime = Date().timeIntervalSince1970
+            self.startGame(with: grid)
         }
         if grid.isOpened || grid.isMarked {
             return
@@ -240,6 +259,7 @@ extension ViewController: MineGridDelegate {
     }
     
     fileprivate func gameWin() {
+        self.timer?.invalidate()
         AudioServicesPlaySystemSound(1521)
         let time = Int((Date().timeIntervalSince1970 - (self.startTime ?? 0)) * 1000)
         let alert = UIAlertController(title: "大吉大利今晚吃鸡", message: "总耗时：\(Double(time) / 1000.0)秒", preferredStyle: .alert)
@@ -250,6 +270,7 @@ extension ViewController: MineGridDelegate {
     }
     
     fileprivate func gameOver() {
+        self.timer?.invalidate()
         AudioServicesPlaySystemSound(1521)
         let alert = UIAlertController(title: "游戏结束", message: "踩到炸弹啦笨蛋！", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "重新开始", style: .default, handler: { (action) in
