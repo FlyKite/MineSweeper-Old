@@ -16,6 +16,7 @@ class ViewController: UIViewController {
     fileprivate var mineGrids: [[MineGrid]] = []
     @IBOutlet fileprivate weak var leftMineCountLabel: UILabel!
     @IBOutlet fileprivate weak var usedTimeLabel: UILabel!
+    @IBOutlet weak var tipsAlertView: UIView!
     
     fileprivate let margin: CGFloat = 80
     fileprivate let gridSize: CGFloat = 42
@@ -55,7 +56,9 @@ class ViewController: UIViewController {
         self.scrollView.contentOffset = CGPoint(x: (width - UIScreen.main.bounds.width) / 2, y: (height - UIScreen.main.bounds.height) / 2)
         
         self.generateMineGrids()
-        self.transitionTips()
+        UIView.animate(withDuration: 1.0, delay: 0, options: .curveEaseInOut, animations: {
+            self.scrollView.zoomScale = 0.75
+        }, completion: nil)
     }
     
     fileprivate func generateMineGrids() {
@@ -75,18 +78,22 @@ class ViewController: UIViewController {
         }
     }
     
-    fileprivate func transitionTips() {
-        UIView.animate(withDuration: 1.0, delay: 0, options: .curveEaseInOut, animations: {
-            self.scrollView.zoomScale = 0.75
-        }) { (finished) in
-            let alert = UIAlertController(title: "操作说明", message: " \n点击：标记为地雷\n用力按：挖开这个格子\n \n点击已经挖开的格子会检查附近的标记，比如点击了已经挖开的格子，这个格子显示数字2，如果这个格子的周围刚好有2个标记则挖开周围所有未标记的格子，否则不执行任何操作。", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "开始", style: .default, handler: nil))
-            self.present(alert, animated: true, completion: nil)
-        }
-    }
-    
     @IBAction func restartClicked(_ sender: UIButton) {
         self.resetGame()
+    }
+    @IBAction func dontShowAgainClicked(_ sender: UIButton) {
+        UIView.animate(withDuration: 0.25, animations: {
+            self.tipsAlertView.alpha = 0
+        }) { (finished) in
+            self.tipsAlertView.isHidden = true
+        }
+    }
+    @IBAction func closeTipsClicked(_ sender: UIButton) {
+        UIView.animate(withDuration: 0.25, animations: {
+            self.tipsAlertView.alpha = 0
+        }) { (finished) in
+            self.tipsAlertView.isHidden = true
+        }
     }
     
     fileprivate func startGame(with grid: MineGrid) {

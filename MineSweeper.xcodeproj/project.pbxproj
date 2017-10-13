@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		960041C7D6C02622B35315BE /* Pods_MineSweeper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2F2E4FB258BE794A8BF637E /* Pods_MineSweeper.framework */; };
 		A66788C31F8C63B600B1AB9E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66788C21F8C63B600B1AB9E /* AppDelegate.swift */; };
 		A66788C51F8C63B600B1AB9E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66788C41F8C63B600B1AB9E /* ViewController.swift */; };
 		A66788C81F8C63B600B1AB9E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A66788C61F8C63B600B1AB9E /* Main.storyboard */; };
@@ -15,9 +16,16 @@
 		A66788D51F8C655D00B1AB9E /* MineGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66788D41F8C655D00B1AB9E /* MineGrid.swift */; };
 		A66788D71F8C660800B1AB9E /* CommonUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66788D61F8C660800B1AB9E /* CommonUtil.swift */; };
 		A6B90F821F8E0D5600C63DDA /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6B90F811F8E0D5600C63DDA /* AudioToolbox.framework */; };
+		A6EA9B911F91246300637761 /* SelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6EA9B901F91246300637761 /* SelectionCell.swift */; };
+		A6EA9B931F91246D00637761 /* SwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6EA9B921F91246D00637761 /* SwitchCell.swift */; };
+		A6EA9B951F91247900637761 /* SubTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6EA9B941F91247800637761 /* SubTitleCell.swift */; };
+		A6EA9B971F91248600637761 /* NormalCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6EA9B961F91248600637761 /* NormalCell.swift */; };
+		A6EA9B991F9124B500637761 /* SettingItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6EA9B981F9124B500637761 /* SettingItem.swift */; };
+		A6EA9B9A1F91277200637761 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6EA9B8D1F91244300637761 /* SettingsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A1E207274FE7D1F1B083EB19 /* Pods-MineSweeper.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MineSweeper.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MineSweeper/Pods-MineSweeper.debug.xcconfig"; sourceTree = "<group>"; };
 		A66788BF1F8C63B600B1AB9E /* MineSweeper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MineSweeper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A66788C21F8C63B600B1AB9E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A66788C41F8C63B600B1AB9E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -28,6 +36,14 @@
 		A66788D41F8C655D00B1AB9E /* MineGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MineGrid.swift; sourceTree = "<group>"; };
 		A66788D61F8C660800B1AB9E /* CommonUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonUtil.swift; sourceTree = "<group>"; };
 		A6B90F811F8E0D5600C63DDA /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		A6EA9B8D1F91244300637761 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		A6EA9B901F91246300637761 /* SelectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionCell.swift; sourceTree = "<group>"; };
+		A6EA9B921F91246D00637761 /* SwitchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchCell.swift; sourceTree = "<group>"; };
+		A6EA9B941F91247800637761 /* SubTitleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubTitleCell.swift; sourceTree = "<group>"; };
+		A6EA9B961F91248600637761 /* NormalCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NormalCell.swift; sourceTree = "<group>"; };
+		A6EA9B981F9124B500637761 /* SettingItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingItem.swift; sourceTree = "<group>"; };
+		E2F2E4FB258BE794A8BF637E /* Pods_MineSweeper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MineSweeper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E83F6B91B8E4B48CA0602D9F /* Pods-MineSweeper.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MineSweeper.release.xcconfig"; path = "Pods/Target Support Files/Pods-MineSweeper/Pods-MineSweeper.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -36,18 +52,29 @@
 			buildActionMask = 2147483647;
 			files = (
 				A6B90F821F8E0D5600C63DDA /* AudioToolbox.framework in Frameworks */,
+				960041C7D6C02622B35315BE /* Pods_MineSweeper.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8D628FB6FFE8D1B1E1D8C0F0 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				A1E207274FE7D1F1B083EB19 /* Pods-MineSweeper.debug.xcconfig */,
+				E83F6B91B8E4B48CA0602D9F /* Pods-MineSweeper.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		A66788B61F8C63B600B1AB9E = {
 			isa = PBXGroup;
 			children = (
 				A66788C11F8C63B600B1AB9E /* MineSweeper */,
 				A66788C01F8C63B600B1AB9E /* Products */,
 				A6B90F801F8E0D5600C63DDA /* Frameworks */,
+				8D628FB6FFE8D1B1E1D8C0F0 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -65,6 +92,7 @@
 				A66788C21F8C63B600B1AB9E /* AppDelegate.swift */,
 				A66788C41F8C63B600B1AB9E /* ViewController.swift */,
 				A66788D41F8C655D00B1AB9E /* MineGrid.swift */,
+				A6EA9B8B1F91244300637761 /* Settings */,
 				A66788D61F8C660800B1AB9E /* CommonUtil.swift */,
 				A66788C61F8C63B600B1AB9E /* Main.storyboard */,
 				A66788C91F8C63B600B1AB9E /* Assets.xcassets */,
@@ -78,8 +106,46 @@
 			isa = PBXGroup;
 			children = (
 				A6B90F811F8E0D5600C63DDA /* AudioToolbox.framework */,
+				E2F2E4FB258BE794A8BF637E /* Pods_MineSweeper.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		A6EA9B8B1F91244300637761 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				A6EA9B8C1F91244300637761 /* Controller */,
+				A6EA9B8E1F91244300637761 /* Model */,
+				A6EA9B8F1F91244300637761 /* View */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		A6EA9B8C1F91244300637761 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				A6EA9B8D1F91244300637761 /* SettingsViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		A6EA9B8E1F91244300637761 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				A6EA9B981F9124B500637761 /* SettingItem.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		A6EA9B8F1F91244300637761 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				A6EA9B901F91246300637761 /* SelectionCell.swift */,
+				A6EA9B921F91246D00637761 /* SwitchCell.swift */,
+				A6EA9B941F91247800637761 /* SubTitleCell.swift */,
+				A6EA9B961F91248600637761 /* NormalCell.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -89,9 +155,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A66788D11F8C63B600B1AB9E /* Build configuration list for PBXNativeTarget "MineSweeper" */;
 			buildPhases = (
+				CB8E2801D63B8C2043594AAF /* [CP] Check Pods Manifest.lock */,
 				A66788BB1F8C63B600B1AB9E /* Sources */,
 				A66788BC1F8C63B600B1AB9E /* Frameworks */,
 				A66788BD1F8C63B600B1AB9E /* Resources */,
+				19F9F4CC002B6641E59B83F7 /* [CP] Embed Pods Frameworks */,
+				4139590847F2E11D2BA87697 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -149,15 +218,75 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		19F9F4CC002B6641E59B83F7 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-MineSweeper/Pods-MineSweeper-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/SQLite.swift/SQLite.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SQLite.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MineSweeper/Pods-MineSweeper-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		4139590847F2E11D2BA87697 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MineSweeper/Pods-MineSweeper-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CB8E2801D63B8C2043594AAF /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-MineSweeper-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		A66788BB1F8C63B600B1AB9E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A6EA9B9A1F91277200637761 /* SettingsViewController.swift in Sources */,
 				A66788D51F8C655D00B1AB9E /* MineGrid.swift in Sources */,
 				A66788C51F8C63B600B1AB9E /* ViewController.swift in Sources */,
+				A6EA9B911F91246300637761 /* SelectionCell.swift in Sources */,
 				A66788D71F8C660800B1AB9E /* CommonUtil.swift in Sources */,
+				A6EA9B971F91248600637761 /* NormalCell.swift in Sources */,
+				A6EA9B991F9124B500637761 /* SettingItem.swift in Sources */,
 				A66788C31F8C63B600B1AB9E /* AppDelegate.swift in Sources */,
+				A6EA9B931F91246D00637761 /* SwitchCell.swift in Sources */,
+				A6EA9B951F91247900637761 /* SubTitleCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -292,6 +421,7 @@
 		};
 		A66788D21F8C63B600B1AB9E /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A1E207274FE7D1F1B083EB19 /* Pods-MineSweeper.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -308,6 +438,7 @@
 		};
 		A66788D31F8C63B600B1AB9E /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E83F6B91B8E4B48CA0602D9F /* Pods-MineSweeper.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
