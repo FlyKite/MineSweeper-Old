@@ -177,6 +177,7 @@ class MineGrid: UIControl {
             self.coverLayer.backgroundColor = self.highlightedBackgroundColor.cgColor
         }
         if #available(iOS 9.0, *) {
+            print("force: \(touch.force)")
             if touch.force >= touch.maximumPossibleForce / 3 {
                 self.coverLayer.backgroundColor = self.normalBackgroundColor.cgColor
                 self.delegate?.gridDeepPressed(grid: self)

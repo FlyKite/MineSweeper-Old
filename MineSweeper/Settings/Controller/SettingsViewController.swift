@@ -26,10 +26,13 @@ class SettingsViewController: UIViewController {
     }
     
     let items: [SettingItem] = [
+        SettingItem.selectionType("界面主题", subTitle: "设置界面的主题色彩", rightText: "蓝色"),
         SettingItem.selectionType("操作模式", subTitle: "设置点击及3D Touch的操作", rightText: "智能模式"),
         SettingItem.selectionType("游戏难度", subTitle: "游戏难度决定雷区大小以及地雷数量", rightText: "高级"),
+        SettingItem.switchType("翻牌动画", subTitle: "点击挖开格子时候的翻牌动画"),
         SettingItem.switchType("今晚吃鸡", subTitle: "游戏胜利时显示“大吉大利今晚吃鸡”"),
         SettingItem.subTitleType("操作说明", subTitle: "如果忘记怎么操作可以看一下"),
+        SettingItem.subTitleType("历史记录", subTitle: "回顾一下当年的英姿"),
         SettingItem.subTitleType("捐赠", subTitle: "如果觉得满意，您可以向开发者打赏点小费"),
         SettingItem.normalType("关于")
     ]

@@ -109,6 +109,7 @@
                                             <constraint firstItem="m7r-Ii-zop" firstAttribute="leading" secondItem="Qvz-RI-smH" secondAttribute="trailing" id="r1u-3N-QuB"/>
                                             <constraint firstAttribute="trailing" secondItem="m7r-Ii-zop" secondAttribute="trailing" constant="16" id="sUH-Xw-dGA"/>
                                             <constraint firstItem="Qvz-RI-smH" firstAttribute="centerY" secondItem="m7r-Ii-zop" secondAttribute="centerY" id="yIN-4g-m4X"/>
+                                            <constraint firstAttribute="width" relation="lessThanOrEqual" constant="350" id="yXb-ac-5t9"/>
                                             <constraint firstItem="m7r-Ii-zop" firstAttribute="top" secondItem="fog-BN-gGX" secondAttribute="bottom" constant="8" id="zUT-b1-gme"/>
                                         </constraints>
                                         <userDefinedRuntimeAttributes>
@@ -120,10 +121,10 @@
                                 </subviews>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstItem="C55-wP-uJg" firstAttribute="leading" secondItem="0ov-AM-bfI" secondAttribute="leading" constant="32" id="Fpr-aE-Izn"/>
+                                    <constraint firstItem="C55-wP-uJg" firstAttribute="leading" secondItem="0ov-AM-bfI" secondAttribute="leading" priority="999" constant="32" id="Fpr-aE-Izn"/>
                                     <constraint firstItem="eFQ-sJ-dQp" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="0ov-AM-bfI" secondAttribute="leading" constant="20" symbolic="YES" id="HBS-3j-xYO"/>
                                     <constraint firstItem="C55-wP-uJg" firstAttribute="centerX" secondItem="0ov-AM-bfI" secondAttribute="centerX" id="T3U-1M-Gzw"/>
-                                    <constraint firstAttribute="trailing" secondItem="C55-wP-uJg" secondAttribute="trailing" constant="32" id="Z3G-cj-0Mx"/>
+                                    <constraint firstAttribute="trailing" secondItem="C55-wP-uJg" secondAttribute="trailing" priority="999" constant="32" id="Z3G-cj-0Mx"/>
                                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="qwk-ZL-mze" secondAttribute="trailing" id="gUr-DG-H21"/>
                                     <constraint firstItem="C55-wP-uJg" firstAttribute="centerY" secondItem="0ov-AM-bfI" secondAttribute="centerY" id="okX-Za-W2Q"/>
                                 </constraints>
@@ -319,7 +320,7 @@
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </view>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="selectionCell" rowHeight="72" id="p0R-2t-Kpo" customClass="SelectionCell" customModule="MineSweeper" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="selectionCell" rowHeight="72" id="p0R-2t-Kpo" customClass="SelectionCell" customModule="MineSweeper" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="375" height="72"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="p0R-2t-Kpo" id="yiE-zq-GHh">

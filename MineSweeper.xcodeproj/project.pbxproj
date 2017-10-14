@@ -22,6 +22,8 @@
 		A6EA9B971F91248600637761 /* NormalCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6EA9B961F91248600637761 /* NormalCell.swift */; };
 		A6EA9B991F9124B500637761 /* SettingItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6EA9B981F9124B500637761 /* SettingItem.swift */; };
 		A6EA9B9A1F91277200637761 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6EA9B8D1F91244300637761 /* SettingsViewController.swift */; };
+		A6EA9B9C1F91DF7100637761 /* SelectionAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6EA9B9B1F91DF7100637761 /* SelectionAlert.swift */; };
+		A6EA9B9E1F91DF7C00637761 /* SelectionAlert.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6EA9B9D1F91DF7C00637761 /* SelectionAlert.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +44,8 @@
 		A6EA9B941F91247800637761 /* SubTitleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubTitleCell.swift; sourceTree = "<group>"; };
 		A6EA9B961F91248600637761 /* NormalCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NormalCell.swift; sourceTree = "<group>"; };
 		A6EA9B981F9124B500637761 /* SettingItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingItem.swift; sourceTree = "<group>"; };
+		A6EA9B9B1F91DF7100637761 /* SelectionAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionAlert.swift; sourceTree = "<group>"; };
+		A6EA9B9D1F91DF7C00637761 /* SelectionAlert.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SelectionAlert.xib; sourceTree = "<group>"; };
 		E2F2E4FB258BE794A8BF637E /* Pods_MineSweeper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MineSweeper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E83F6B91B8E4B48CA0602D9F /* Pods-MineSweeper.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MineSweeper.release.xcconfig"; path = "Pods/Target Support Files/Pods-MineSweeper/Pods-MineSweeper.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -144,6 +148,8 @@
 				A6EA9B921F91246D00637761 /* SwitchCell.swift */,
 				A6EA9B941F91247800637761 /* SubTitleCell.swift */,
 				A6EA9B961F91248600637761 /* NormalCell.swift */,
+				A6EA9B9B1F91DF7100637761 /* SelectionAlert.swift */,
+				A6EA9B9D1F91DF7C00637761 /* SelectionAlert.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -211,6 +217,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A66788CD1F8C63B600B1AB9E /* LaunchScreen.storyboard in Resources */,
+				A6EA9B9E1F91DF7C00637761 /* SelectionAlert.xib in Resources */,
 				A66788CA1F8C63B600B1AB9E /* Assets.xcassets in Resources */,
 				A66788C81F8C63B600B1AB9E /* Main.storyboard in Resources */,
 			);
@@ -287,6 +294,7 @@
 				A66788C31F8C63B600B1AB9E /* AppDelegate.swift in Sources */,
 				A6EA9B931F91246D00637761 /* SwitchCell.swift in Sources */,
 				A6EA9B951F91247900637761 /* SubTitleCell.swift in Sources */,
+				A6EA9B9C1F91DF7100637761 /* SelectionAlert.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

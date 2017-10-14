@@ -54,11 +54,45 @@ class ViewController: UIViewController {
         let height = self.mineContainer.bounds.height + margin * 2
         self.scrollView.contentSize = CGSize(width: width, height: height)
         self.scrollView.contentOffset = CGPoint(x: (width - UIScreen.main.bounds.width) / 2, y: (height - UIScreen.main.bounds.height) / 2)
+        let x = (self.scrollView.contentSize.width - UIScreen.main.bounds.width) / 2
+        let y = (self.scrollView.contentSize.height - UIScreen.main.bounds.height) / 2
+        self.scrollView.contentOffset = CGPoint(x: x, y: y)
         
         self.generateMineGrids()
         UIView.animate(withDuration: 1.0, delay: 0, options: .curveEaseInOut, animations: {
-            self.scrollView.zoomScale = 0.75
+            self.scrollView.setZoomScale(0.75, animated: false)
+            let x = (self.scrollView.contentSize.width - UIScreen.main.bounds.width) / 2
+            let y = (self.scrollView.contentSize.height - UIScreen.main.bounds.height) / 2
+            self.scrollView.contentOffset = CGPoint(x: x, y: y)
         }, completion: nil)
+    }
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        self.layoutMineContainer()
+    }
+    
+    fileprivate func layoutMineContainer() {
+        var width = self.mineContainer.bounds.width * scrollView.zoomScale
+        if width > UIScreen.main.bounds.width {
+            width += margin * 2
+            var frame = self.mineContainer.frame
+            frame.origin.x = margin
+            self.mineContainer.frame = frame
+        } else {
+            var frame = self.mineContainer.frame
+            frame.origin.x = (UIScreen.main.bounds.width - frame.size.width) / 2
+            self.mineContainer.frame = frame
+        }
+        var height = self.mineContainer.bounds.height * scrollView.zoomScale
+        if height > UIScreen.main.bounds.height - 20 - margin * 2 {
+            height += margin * 2
+        } else {
+            var frame = self.mineContainer.frame
+            frame.origin.y = (UIScreen.main.bounds.height - 20 - frame.size.height) / 2 + 20
+            self.mineContainer.frame = frame
+        }
+        self.scrollView.contentSize = CGSize(width: width, height: height)
     }
     
     fileprivate func generateMineGrids() {
@@ -206,22 +240,7 @@ extension ViewController: UIScrollViewDelegate {
     }
     
     func scrollViewDidZoom(_ scrollView: UIScrollView) {
-        var width = self.mineContainer.bounds.width * scrollView.zoomScale
-        if width > UIScreen.main.bounds.width {
-            width += margin * 2
-            var frame = self.mineContainer.frame
-            frame.origin.x = margin
-            self.mineContainer.frame = frame
-        } else {
-            var frame = self.mineContainer.frame
-            frame.origin.x = (UIScreen.main.bounds.width - frame.size.width) / 2
-            self.mineContainer.frame = frame
-        }
-        var height = self.mineContainer.bounds.height * scrollView.zoomScale
-        if height > UIScreen.main.bounds.height - 20 {
-            height += margin * 2
-        }
-        self.scrollView.contentSize = CGSize(width: width, height: height)
+        self.layoutMineContainer()
     }
 }
 
