@@ -10,12 +10,12 @@
 		960041C7D6C02622B35315BE /* Pods_MineSweeper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2F2E4FB258BE794A8BF637E /* Pods_MineSweeper.framework */; };
 		A63561A3206F89D000C090FC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A635619F206F89D000C090FC /* ViewController.swift */; };
 		A63561A4206F89D000C090FC /* MineGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = A63561A2206F89D000C090FC /* MineGrid.swift */; };
+		A63561AD206F908E00C090FC /* MineMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = A63561AC206F908E00C090FC /* MineMap.swift */; };
 		A66788C31F8C63B600B1AB9E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66788C21F8C63B600B1AB9E /* AppDelegate.swift */; };
 		A66788C81F8C63B600B1AB9E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A66788C61F8C63B600B1AB9E /* Main.storyboard */; };
 		A66788CA1F8C63B600B1AB9E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A66788C91F8C63B600B1AB9E /* Assets.xcassets */; };
 		A66788CD1F8C63B600B1AB9E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A66788CB1F8C63B600B1AB9E /* LaunchScreen.storyboard */; };
 		A66788D71F8C660800B1AB9E /* CommonUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66788D61F8C660800B1AB9E /* CommonUtil.swift */; };
-		A6B90F821F8E0D5600C63DDA /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6B90F811F8E0D5600C63DDA /* AudioToolbox.framework */; };
 		A6EA9B911F91246300637761 /* SelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6EA9B901F91246300637761 /* SelectionCell.swift */; };
 		A6EA9B931F91246D00637761 /* SwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6EA9B921F91246D00637761 /* SwitchCell.swift */; };
 		A6EA9B951F91247900637761 /* SubTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6EA9B941F91247800637761 /* SubTitleCell.swift */; };
@@ -30,6 +30,7 @@
 		A1E207274FE7D1F1B083EB19 /* Pods-MineSweeper.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MineSweeper.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MineSweeper/Pods-MineSweeper.debug.xcconfig"; sourceTree = "<group>"; };
 		A635619F206F89D000C090FC /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		A63561A2206F89D000C090FC /* MineGrid.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MineGrid.swift; sourceTree = "<group>"; };
+		A63561AC206F908E00C090FC /* MineMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MineMap.swift; sourceTree = "<group>"; };
 		A66788BF1F8C63B600B1AB9E /* MineSweeper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MineSweeper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A66788C21F8C63B600B1AB9E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A66788C71F8C63B600B1AB9E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -55,7 +56,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A6B90F821F8E0D5600C63DDA /* AudioToolbox.framework in Frameworks */,
 				960041C7D6C02622B35315BE /* Pods_MineSweeper.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -93,6 +93,7 @@
 		A63561A0206F89D000C090FC /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				A63561AC206F908E00C090FC /* MineMap.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -265,11 +266,13 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-MineSweeper/Pods-MineSweeper-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/SQLite.swift/SQLite.framework",
+				"${BUILT_PRODUCTS_DIR}/Realm/Realm.framework",
+				"${BUILT_PRODUCTS_DIR}/RealmSwift/RealmSwift.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SQLite.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RealmSwift.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -319,6 +322,7 @@
 				A63561A3206F89D000C090FC /* ViewController.swift in Sources */,
 				A6EA9B9A1F91277200637761 /* SettingsViewController.swift in Sources */,
 				A6EA9B911F91246300637761 /* SelectionCell.swift in Sources */,
+				A63561AD206F908E00C090FC /* MineMap.swift in Sources */,
 				A66788D71F8C660800B1AB9E /* CommonUtil.swift in Sources */,
 				A6EA9B971F91248600637761 /* NormalCell.swift in Sources */,
 				A6EA9B991F9124B500637761 /* SettingItem.swift in Sources */,

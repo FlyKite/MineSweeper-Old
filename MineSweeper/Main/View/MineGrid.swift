@@ -18,7 +18,7 @@ class MineGrid: UIControl {
     let rowIndex: Int
     let columnIndex: Int
     weak var delegate: MineGridDelegate?
-    var mineNumber: Int = 0 {
+    var mineNumber: Int8 = 0 {
         didSet {
             if self.mineNumber == -1 {
                 self.mineLayer.contents = self.mineImage.cgImage

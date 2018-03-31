@@ -11,27 +11,25 @@ import AudioToolbox
 
 class ViewController: UIViewController {
     
-    @IBOutlet fileprivate weak var scrollView: UIScrollView!
-    fileprivate let mineContainer: UIView = UIView()
-    fileprivate var mineGrids: [[MineGrid]] = []
-    @IBOutlet fileprivate weak var leftMineCountLabel: UILabel!
-    @IBOutlet fileprivate weak var usedTimeLabel: UILabel!
-    @IBOutlet weak var tipsAlertView: UIView!
+    @IBOutlet private weak var scrollView: UIScrollView!
+    @IBOutlet private weak var leftMineCountLabel: UILabel!
+    @IBOutlet private weak var usedTimeLabel: UILabel!
+    @IBOutlet private weak var tipsAlertView: UIView!
+    private let mineContainer: UIView = UIView()
+    private var mineGrids: [[MineGrid]] = []
     
-    fileprivate let margin: CGFloat = 80
-    fileprivate let gridSize: CGFloat = 42
+    private let margin: CGFloat = 80
+    private let gridSize: CGFloat = 42
     
-    fileprivate let rows = 30
-    fileprivate let columns = 16
-    fileprivate let mines = 99
+    private var mineMap: MineMap = MineMap()
     
-    fileprivate var gameStarted: Bool = false
-    fileprivate var timer: CADisplayLink?
-    fileprivate var timeStep: Int = 0
-    fileprivate var openedCount: Int = 0
-    fileprivate var countOfMarks = 0 {
+    private var gameStarted: Bool = false
+    private var timer: CADisplayLink?
+    private var timeStep: Int = 0
+    private var openedCount: Int = 0
+    private var countOfMarks = 0 {
         didSet {
-            self.leftMineCountLabel.text = "\(self.mines - self.countOfMarks)"
+            self.leftMineCountLabel.text = "\(self.mineMap.mines - self.countOfMarks)"
         }
     }
 
@@ -47,8 +45,8 @@ class ViewController: UIViewController {
         
         self.mineContainer.frame = CGRect(x: margin,
                                           y: margin,
-                                          width: gridSize * CGFloat(columns),
-                                          height: gridSize * CGFloat(rows))
+                                          width: gridSize * CGFloat(self.mineMap.columns),
+                                          height: gridSize * CGFloat(self.mineMap.rows))
         self.scrollView.addSubview(self.mineContainer)
         let width = self.mineContainer.bounds.width + margin * 2
         let height = self.mineContainer.bounds.height + margin * 2
@@ -72,7 +70,7 @@ class ViewController: UIViewController {
         self.layoutMineContainer()
     }
     
-    fileprivate func layoutMineContainer() {
+    private func layoutMineContainer() {
         var width = self.mineContainer.bounds.width * scrollView.zoomScale
         if width > UIScreen.main.bounds.width {
             width += margin * 2
@@ -95,10 +93,14 @@ class ViewController: UIViewController {
         self.scrollView.contentSize = CGSize(width: width, height: height)
     }
     
-    fileprivate func generateMineGrids() {
-        for row in 0 ..< rows {
-            var mineGrids: [MineGrid] = []
-            for column in 0 ..< columns {
+    private func generateMineGrids() {
+        for subview in self.mineContainer.subviews {
+            subview.removeFromSuperview()
+        }
+        self.mineGrids = []
+        for row in 0 ..< self.mineMap.rows {
+            var mineGridsRow: [MineGrid] = []
+            for column in 0 ..< self.mineMap.columns {
                 let grid = MineGrid(rowIndex: row, columnIndex: column)
                 grid.delegate = self
                 grid.frame = CGRect(x: gridSize * CGFloat(column),
@@ -106,9 +108,9 @@ class ViewController: UIViewController {
                                     width: gridSize,
                                     height: gridSize)
                 self.mineContainer.addSubview(grid)
-                mineGrids.append(grid)
+                mineGridsRow.append(grid)
             }
-            self.mineGrids.append(mineGrids)
+            self.mineGrids.append(mineGridsRow)
         }
     }
     
@@ -130,15 +132,16 @@ class ViewController: UIViewController {
         }
     }
     
-    fileprivate func startGame(with grid: MineGrid) {
-        self.generateMine(grid.rowIndex, grid.columnIndex)
+    private func startGame(with grid: MineGrid) {
+        self.mineMap = MineMap()
+        self.mineMap.generateMine(grid.rowIndex, grid.columnIndex)
         self.gameStarted = true
         self.timer?.invalidate()
         self.timer = CADisplayLink(target: self, selector: #selector(timeStep(_:)))
         self.timer?.add(to: RunLoop.current, forMode: .commonModes)
     }
     
-    @objc fileprivate func timeStep(_ timer: CADisplayLink) {
+    @objc private func timeStep(_ timer: CADisplayLink) {
         self.timeStep += 1
         if #available(iOS 10.3, *) {
             self.usedTimeLabel.text = "\(self.timeStep / UIScreen.main.maximumFramesPerSecond)"
@@ -147,82 +150,19 @@ class ViewController: UIViewController {
         }
     }
     
-    fileprivate func resetGame() {
+    private func resetGame() {
         self.gameStarted = false
         self.timer?.invalidate()
         self.timeStep = 0
         self.openedCount = 0
         self.countOfMarks = 0
-        self.leftMineCountLabel.text = "\(mines)"
+        self.leftMineCountLabel.text = "\(self.mineMap.mines)"
         self.usedTimeLabel.text = "0"
         for row in 0 ..< self.mineGrids.count {
             for col in 0 ..< self.mineGrids[row].count {
                 self.mineGrids[row][col].reset()
             }
         }
-    }
-    
-    fileprivate func generateMine(_ firstRow: Int, _ firstColumn: Int) {
-        for _ in 0 ..< mines {
-            var set = false
-            while !set {
-                let row = Int(arc4random()) % rows
-                let col = Int(arc4random()) % columns
-                let grid = self.mineGrids[row][col]
-                if grid.mineNumber != -1 {
-                    let shouldSkip = row - firstRow <= 1
-                        && row - firstRow >= -1
-                        && col - firstColumn <= 1
-                        && col - firstColumn >= -1
-                    if !shouldSkip {
-                        grid.mineNumber = -1
-                        set = true
-                    }
-                }
-            }
-        }
-        self.generateNumbers()
-    }
-    
-    fileprivate func generateNumbers() {
-        for row in 0 ..< self.mineGrids.count {
-            let gridRow = self.mineGrids[row]
-            for col in 0 ..< gridRow.count {
-                let grid = gridRow[col]
-                if grid.mineNumber != -1 {
-                    grid.mineNumber = self.countOfMineArround(row, col)
-                }
-            }
-        }
-    }
-    
-    fileprivate func countOfMineArround(_ row: Int, _ col: Int) -> Int {
-        var count = 0
-        if row > 0 && col > 0 && self.mineGrids[row - 1][col - 1].mineNumber == -1 {
-            count += 1
-        }
-        if row > 0 && self.mineGrids[row - 1][col].mineNumber == -1 {
-            count += 1
-        }
-        if row > 0 && col < columns - 1 && self.mineGrids[row - 1][col + 1].mineNumber == -1 {
-            count += 1
-        }
-        if col > 0 && self.mineGrids[row][col - 1].mineNumber == -1 {
-            count += 1
-        }
-        if col < columns - 1 && self.mineGrids[row][col + 1].mineNumber == -1 {
-            count += 1
-        }
-        if row < rows - 1 && col > 0 && self.mineGrids[row + 1][col - 1].mineNumber == -1 {
-            count += 1
-        }
-        if row < rows - 1 && self.mineGrids[row + 1][col].mineNumber == -1 {
-            count += 1
-        }
-        if row < rows - 1 && col < columns - 1 && self.mineGrids[row + 1][col + 1].mineNumber == -1 {
-            count += 1
-        }
-        return count
     }
 
     override func didReceiveMemoryWarning() {
@@ -266,7 +206,7 @@ extension ViewController: MineGridDelegate {
         self.open(grid: grid)
     }
     
-    fileprivate func open(grid: MineGrid) {
+    private func open(grid: MineGrid) {
         if !self.gameStarted {
             self.startGame(with: grid)
         }
@@ -277,14 +217,14 @@ extension ViewController: MineGridDelegate {
         self.openedCount += 1
         if grid.mineNumber == -1 {
             self.gameOver()
-        } else if self.openedCount == rows * columns - mines {
+        } else if self.openedCount == self.mineMap.rows * self.mineMap.columns - self.mineMap.mines {
             self.gameWin()
         } else if grid.mineNumber == 0 {
             self.openArround(grid: grid)
         }
     }
     
-    fileprivate func gameWin() {
+    private func gameWin() {
         self.timer?.invalidate()
         AudioServicesPlaySystemSound(1521)
         var time = 0
@@ -309,7 +249,7 @@ extension ViewController: MineGridDelegate {
         self.present(alert, animated: true, completion: nil)
     }
     
-    fileprivate func gameOver() {
+    private func gameOver() {
         self.timer?.invalidate()
         for row in 0 ..< self.mineGrids.count {
             for col in 0 ..< self.mineGrids[row].count {
@@ -333,7 +273,7 @@ extension ViewController: MineGridDelegate {
         self.present(alert, animated: true, completion: nil)
     }
     
-    fileprivate func openArround(grid: MineGrid) {
+    private func openArround(grid: MineGrid) {
         let gridsArround = self.getGridsArround(grid: grid)
         var markCount = 0
         for grid in gridsArround {
@@ -347,7 +287,7 @@ extension ViewController: MineGridDelegate {
         }
     }
     
-    fileprivate func getGridsArround(grid: MineGrid) -> [MineGrid] {
+    private func getGridsArround(grid: MineGrid) -> [MineGrid] {
         let row = grid.rowIndex
         let column = grid.columnIndex
         var grids: [MineGrid] = []
@@ -357,22 +297,22 @@ extension ViewController: MineGridDelegate {
         if row > 0 {
             grids.append(self.mineGrids[row - 1][column])
         }
-        if row > 0 && column < columns - 1 {
+        if row > 0 && column < self.mineMap.columns - 1 {
             grids.append(self.mineGrids[row - 1][column + 1])
         }
         if column > 0 {
             grids.append(self.mineGrids[row][column - 1])
         }
-        if column < columns - 1 {
+        if column < self.mineMap.columns - 1 {
             grids.append(self.mineGrids[row][column + 1])
         }
-        if row < rows - 1 && column > 0 {
+        if row < self.mineMap.rows - 1 && column > 0 {
             grids.append(self.mineGrids[row + 1][column - 1])
         }
-        if row < rows - 1 {
+        if row < self.mineMap.rows - 1 {
             grids.append(self.mineGrids[row + 1][column])
         }
-        if row < rows - 1 && column < columns - 1 {
+        if row < self.mineMap.rows - 1 && column < self.mineMap.columns - 1 {
             grids.append(self.mineGrids[row + 1][column + 1])
         }
         return grids
